@@ -1,13 +1,11 @@
-============================================================================ 
-SemEval Task Proposals 2027 Reviews for Submission #20
-============================================================================ 
+# SemEval Task Proposals 2027 Reviews for Submission #20
 
 Title: SemEval-2027 Task Proposal: Coherence-Aware Compositional Fine Grained Natural Language Inference (CoCo-NLI)
 Authors: Jon Felix Apaolaza Larraya, Aitor Soroa, Rodrigo Agerri and Inigo Lopez-Gazpio
 
-============================================================================
-                            META-REVIEW
-============================================================================ 
+
+##                            META-REVIEW
+
 
 Comments: 
 
@@ -16,9 +14,9 @@ reviewers believe the proposal is well-structured and evaluation setup is strong
 Both reviewers expressed some concerns over the conceptual framing of the task and some other technical details,
 but these do not undermine the strengths of the submission.
 
-============================================================================
-                            REVIEWER #1
-============================================================================
+
+##                            REVIEWER #1
+
 
 Detailed Comments
 -------------------
@@ -101,9 +99,8 @@ Questions for Authors
 
 
 
-============================================================================
-                            REVIEWER #2
-============================================================================
+##                            REVIEWER #2
+
 
 Detailed Comments
 ---------------------------------------------------------------------------
