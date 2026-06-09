@@ -6,7 +6,7 @@
 
 DiCo-NLI is a SemEval-2027 shared task on **directional consistency** in fine-grained Natural Language Inference (NLI).
 
-The task is inspired by the Reversal Curse, but it does **not** directly test parametric knowledge reversal in the Berglund et al. sense. Instead, it evaluates whether a system assigns logically compatible NLI labels when an ordered phrase pair is reversed.
+DiCo-NLI evaluates whether NLI systems make **consistent direction-sensitive decisions** over paired phrase instances. Following the spirit of [Berglund et al.'s Reversal Curse work](https://proceedings.iclr.cc/paper_files/paper/2024/hash/5178b2f2d7c44aa390c0777dc77b3f0c-Abstract-Conference.html), the task treats reversal as a controlled stress test for semantic generalization: a system should not only identify the correct relation for an ordered phrase pair, but also produce the logically compatible relation when the same pair is presented in the opposite direction.
 
 **If you use our data, please cite:**
 
