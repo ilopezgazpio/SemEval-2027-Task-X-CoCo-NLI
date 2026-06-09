@@ -94,13 +94,37 @@ The official scorer will report:
 
 `NEGATIVE_OTHER` items will be included in the standard label-prediction evaluation. They will not be included in `SoftCons` or `HardCons`, which are defined only over reversible pairs with `EQUIVALENCE`, `FORWARD_ENTAILMENT`, and `BACKWARD_ENTAILMENT` labels.
 
+## Consistency Metrics
+
+`SoftCons` evaluates whether a system is internally consistent under reversal. It ignores the gold label and only checks whether the two predictions made by the same system are compatible with each other.
+
+For example, if a system predicts:
+
+| Premise | Hypothesis | Prediction |
+|---------|------------|------------|
+| `Everyone is hungry` | `Someone is hungry` | `FORWARD_ENTAILMENT` |
+| `Someone is hungry` | `Everyone is hungry` | `BACKWARD_ENTAILMENT` |
+
+then the pair is soft-consistent. The same would be true if the system predicted `EQUIVALENCE` in both directions. In contrast, predicting `FORWARD_ENTAILMENT` in both directions is not soft-consistent, because the reversed counterpart of `FORWARD_ENTAILMENT` is `BACKWARD_ENTAILMENT`.
+
+This metric is useful because a model can be self-consistent even when it is wrong. It separates directional stability from correctness.
+
 For an item `x` and its reversed counterpart `x_rev`, with system prediction function `f` and deterministic label-reversal operator `Rev`:
 
 ```text
 SoftCons(x) = 1 iff f(x) = Rev(f(x_rev))
 ```
 
-`HardCons` additionally requires both predictions to match the gold labels.
+`HardCons` is stricter. It requires the same directional compatibility condition as `SoftCons`, but also requires both predictions to match the gold labels. In practice, because the gold label of the reversed item is produced by a deterministic reversal operator, `HardCons` measures whether the system gets both members of the reversible pair correct.
+
+For example:
+
+| Premise | Hypothesis | Gold label | Prediction |
+|---------|------------|------------|------------|
+| `Everyone is hungry` | `Someone is hungry` | `FORWARD_ENTAILMENT` | `FORWARD_ENTAILMENT` |
+| `Someone is hungry` | `Everyone is hungry` | `BACKWARD_ENTAILMENT` | `BACKWARD_ENTAILMENT` |
+
+This pair receives `HardCons = 1`. If either direction is wrong, or if the two predictions are directionally incompatible, it receives `HardCons = 0`.
 
 The final leaderboard may use one primary metric or a mixture of `F-measure`, `SoftCons`, and `HardCons`; this will be fixed before the official evaluation phase and documented in the scorer.
 
