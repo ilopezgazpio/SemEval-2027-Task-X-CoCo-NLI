@@ -2,9 +2,9 @@
   <img align="center" src="static/figures/logo.png" style="width: 100%;" />
 </p>
 
-# SemEval 2027 Task X: Consistency-Aware Compositional Fine-Grained Natural Language Inference (CoCo-NLI)
+# SemEval 2027 Task X: DiCo-NLI - Directional Consistency in Fine-Grained Natural Language Inference
 
-CoCo-NLI is a SemEval-2027 shared task on **directional inferential consistency** in fine-grained Natural Language Inference (NLI).
+DiCo-NLI is a SemEval-2027 shared task on **directional consistency** in fine-grained Natural Language Inference (NLI).
 
 The task is inspired by the Reversal Curse, but it does **not** directly test parametric knowledge reversal in the Berglund et al. sense. Instead, it evaluates whether a system assigns logically compatible NLI labels when an ordered phrase pair is reversed.
 
@@ -25,9 +25,9 @@ TODO.
 
 # Task Description
 
-Standard NLI benchmarks usually evaluate whether a model predicts the correct label for a single ordered pair. CoCo-NLI adds a paired requirement: if a model predicts a relation for `(premise, hypothesis)`, its prediction for `(hypothesis, premise)` should be compatible with the logical reversal of that relation.
+Standard NLI benchmarks usually evaluate whether a model predicts the correct label for a single ordered pair. DiCo-NLI adds a paired requirement: if a model predicts a relation for `(premise, hypothesis)`, its prediction for `(hypothesis, premise)` should be compatible with the logical reversal of that relation.
 
-The task uses short phrase pairs derived from PhrasIS, a fine-grained phrase inference and similarity benchmark built from naturally occurring image captions and news headlines. CoCo-NLI focuses on the reversible subset of PhrasIS:
+The task uses short phrase pairs derived from PhrasIS, a fine-grained phrase inference and similarity benchmark built from naturally occurring image captions and news headlines. DiCo-NLI focuses on the reversible subset of PhrasIS:
 
 | Label | Reversed label |
 |-------|----------------|
@@ -42,7 +42,7 @@ Example:
 | `Everyone is hungry` | `Someone is hungry` | `FORWARD_ENTAILMENT` |
 | `Someone is hungry` | `Everyone is hungry` | `BACKWARD_ENTAILMENT` |
 
-This design probes whether models rely on shallow similarity cues or maintain direction-aware semantic structure. A model may be correct on isolated items but inconsistent under reversal; it may also be internally consistent but wrong. CoCo-NLI reports both behaviors explicitly.
+This design probes whether models rely on shallow similarity cues or maintain direction-aware semantic structure. A model may be correct on isolated items but inconsistent under reversal; it may also be internally consistent but wrong. DiCo-NLI reports both behaviors explicitly.
 
 The task will release trial and final data under a documented `data/` folder once the task package is ready. The expected structure is:
 
@@ -60,7 +60,7 @@ The data documentation will specify label distributions, source provenance, spli
 
 # Tracks
 
-CoCo-NLI will include four tracks.
+DiCo-NLI will include four tracks.
 
 | Track | Name | Description |
 |-------|------|-------------|
@@ -198,9 +198,9 @@ The dataset is provided for scientific research and shared-task evaluation. Orga
 # FAQs
 
 <details>
-  <summary>Is CoCo-NLI the same as the original Reversal Curse benchmark?</summary>
+  <summary>Is DiCo-NLI the same as the original Reversal Curse benchmark?</summary>
 
-No. The original Reversal Curse work tests parametric knowledge reversal: a model trained on `A is B` may fail to retrieve `B is A`. CoCo-NLI is inspired by that problem, but evaluates directional inferential consistency in an NLI setting where both phrases are provided to the system.
+No. The original Reversal Curse work tests parametric knowledge reversal: a model trained on `A is B` may fail to retrieve `B is A`. DiCo-NLI is inspired by that problem, but evaluates directional consistency in an NLI setting where both phrases are provided to the system.
 </details>
 
 <details>
