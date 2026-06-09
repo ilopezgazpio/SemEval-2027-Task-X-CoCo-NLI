@@ -2,9 +2,9 @@
   <img align="center" src="static/figures/logo.png" style="width: 100%;" />
 </p>
 
-# SemEval 2027 Task X: Coherence-Aware Compositional Fine-Grained Natural Language Inference (CoCo-NLI)
+# SemEval 2027 Task X: Consistency-Aware Compositional Fine-Grained Natural Language Inference (CoCo-NLI)
 
-CoCo-NLI is a SemEval-2027 shared task on **directional inferential coherence** in fine-grained Natural Language Inference (NLI).
+CoCo-NLI is a SemEval-2027 shared task on **directional inferential consistency** in fine-grained Natural Language Inference (NLI).
 
 The task is inspired by the Reversal Curse, but it does **not** directly test parametric knowledge reversal in the Berglund et al. sense. Instead, it evaluates whether a system assigns logically compatible NLI labels when an ordered phrase pair is reversed.
 
@@ -42,7 +42,7 @@ Example:
 | `Everyone is hungry` | `Someone is hungry` | `FORWARD_ENTAILMENT` |
 | `Someone is hungry` | `Everyone is hungry` | `BACKWARD_ENTAILMENT` |
 
-This design probes whether models rely on shallow similarity cues or maintain direction-aware semantic structure. A model may be correct on isolated items but incoherent under reversal; it may also be internally coherent but wrong. CoCo-NLI reports both behaviors explicitly.
+This design probes whether models rely on shallow similarity cues or maintain direction-aware semantic structure. A model may be correct on isolated items but inconsistent under reversal; it may also be internally consistent but wrong. CoCo-NLI reports both behaviors explicitly.
 
 The task will release trial and final data under a documented `data/` folder once the task package is ready. The expected structure is:
 
@@ -67,7 +67,7 @@ CoCo-NLI will include four tracks.
 | 1 | English | Monolingual English phrase-pair NLI. |
 | 2 | Spanish | Monolingual Spanish phrase-pair NLI. |
 | 3 | Basque | Monolingual Basque phrase-pair NLI. |
-| 4 | Mixed multilingual | Premise and hypothesis may appear in any EN/ES/EU language combination. This track targets cross-lingual directional coherence. |
+| 4 | Mixed multilingual | Premise and hypothesis may appear in any EN/ES/EU language combination. This track targets cross-lingual directional consistency. |
 
 The Spanish and Basque data will be produced from the English source items through translation plus bilingual expert verification. Verification will check not only translation fidelity, but also whether the directional entailment relation is preserved after translation. Items whose logical relation is unstable after translation will be corrected, relabeled if appropriate, or removed from the official split.
 
@@ -86,18 +86,18 @@ The official scorer will report:
 | Metric | What it measures |
 |--------|------------------|
 | `F-measure` | Standard label-prediction quality. The final scorer will document whether the official variant is weighted, macro, or a combination. |
-| `SoftCoh` | Directional self-consistency under the reversal operator, independent of gold correctness. |
-| `HardCoh` | Paired correctness under reversal: both directions must be predicted correctly. Because the reversed gold label is deterministic, this is a strict paired-accuracy/coherence measure. |
+| `SoftCons` | Directional self-consistency under the reversal operator, independent of gold correctness. |
+| `HardCons` | Paired correctness under reversal: both directions must be predicted correctly. Because the reversed gold label is deterministic, this is a strict paired-accuracy/consistency measure. |
 
 For an item `x` and its reversed counterpart `x_rev`, with system prediction function `f` and deterministic label-reversal operator `Rev`:
 
 ```text
-SoftCoh(x) = 1 iff f(x) = Rev(f(x_rev))
+SoftCons(x) = 1 iff f(x) = Rev(f(x_rev))
 ```
 
-`HardCoh` additionally requires both predictions to match the gold labels.
+`HardCons` additionally requires both predictions to match the gold labels.
 
-The final leaderboard may use one primary metric or a mixture of `F-measure`, `SoftCoh`, and `HardCoh`; this will be fixed before the official evaluation phase and documented in the scorer.
+The final leaderboard may use one primary metric or a mixture of `F-measure`, `SoftCons`, and `HardCons`; this will be fixed before the official evaluation phase and documented in the scorer.
 
 Scores will be reported per track. We also plan to report model metadata in the task analysis, including:
 
@@ -200,7 +200,7 @@ The dataset is provided for scientific research and shared-task evaluation. Orga
 <details>
   <summary>Is CoCo-NLI the same as the original Reversal Curse benchmark?</summary>
 
-No. The original Reversal Curse work tests parametric knowledge reversal: a model trained on `A is B` may fail to retrieve `B is A`. CoCo-NLI is inspired by that problem, but evaluates directional inferential coherence in an NLI setting where both phrases are provided to the system.
+No. The original Reversal Curse work tests parametric knowledge reversal: a model trained on `A is B` may fail to retrieve `B is A`. CoCo-NLI is inspired by that problem, but evaluates directional inferential consistency in an NLI setting where both phrases are provided to the system.
 </details>
 
 <details>
