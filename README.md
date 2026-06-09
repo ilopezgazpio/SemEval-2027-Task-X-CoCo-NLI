@@ -244,7 +244,6 @@ Yes. Final gold labels are expected to be released after the official evaluation
 - SemEval FAQ: https://semeval.github.io/faq.html
 - PhrasIS: Phrase Inference and Similarity benchmark: https://doi.org/10.1093/jigpal/jzae037
 - The Reversal Curse: LLMs trained on "A is B" fail to learn "B is A": https://proceedings.iclr.cc/paper_files/paper/2024/hash/5178b2f2d7c44aa390c0777dc77b3f0c-Abstract-Conference.html
-- Task proposal PDF: [latex/task_proposal/2027_SemEval_Task_Proposal__CoCo_NLI.pdf](latex/task_proposal/2027_SemEval_Task_Proposal__CoCo_NLI.pdf)
 
 # Organizers
 
