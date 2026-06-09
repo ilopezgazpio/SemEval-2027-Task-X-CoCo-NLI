@@ -35,6 +35,8 @@ The task uses short phrase pairs derived from PhrasIS, a fine-grained phrase inf
 | `FORWARD_ENTAILMENT` | `BACKWARD_ENTAILMENT` |
 | `BACKWARD_ENTAILMENT` | `FORWARD_ENTAILMENT` |
 
+The official data will also include negative/noise samples from PhrasIS. Any original PhrasIS label outside the reversible set above will be mapped to a single `NEGATIVE_OTHER` label. These items make the classification problem less dependent on a closed reversible-label subset and help test whether systems can separate directional entailment from weaker or unrelated semantic relations.
+
 Example:
 
 | Premise | Hypothesis | Label |
@@ -79,6 +81,7 @@ Systems must predict one label for every ordered phrase pair:
 EQUIVALENCE
 FORWARD_ENTAILMENT
 BACKWARD_ENTAILMENT
+NEGATIVE_OTHER
 ```
 
 The official scorer will report:
@@ -88,6 +91,8 @@ The official scorer will report:
 | `F-measure` | Standard label-prediction quality. The final scorer will document whether the official variant is weighted, macro, or a combination. |
 | `SoftCons` | Directional self-consistency under the reversal operator, independent of gold correctness. |
 | `HardCons` | Paired correctness under reversal: both directions must be predicted correctly. Because the reversed gold label is deterministic, this is a strict paired-accuracy/consistency measure. |
+
+`NEGATIVE_OTHER` items will be included in the standard label-prediction evaluation. They will not be included in `SoftCons` or `HardCons`, which are defined only over reversible pairs with `EQUIVALENCE`, `FORWARD_ENTAILMENT`, and `BACKWARD_ENTAILMENT` labels.
 
 For an item `x` and its reversed counterpart `x_rev`, with system prediction function `f` and deterministic label-reversal operator `Rev`:
 
