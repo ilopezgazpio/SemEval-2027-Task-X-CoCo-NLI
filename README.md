@@ -4,7 +4,7 @@
 
 # SemEval 2027 Task X: DiCo-NLI - Directional Consistency in Fine-Grained Natural Language Inference
 
-DiCo-NLI is a SemEval-2027 shared task on **directional consistency** in fine-grained Natural Language Inference (NLI).
+DiCo-NLI is a SemEval-2027 shared task on **directional consistency** in fine-grained Natural Language Inference.
 
 DiCo-NLI evaluates whether NLI systems make **consistent direction-sensitive decisions** over paired phrase instances. Following the spirit of [Berglund et al.'s Reversal Curse work](https://proceedings.iclr.cc/paper_files/paper/2024/hash/5178b2f2d7c44aa390c0777dc77b3f0c-Abstract-Conference.html), the task treats reversal as a controlled stress test for semantic generalization: a system should not only identify the correct relation for an ordered phrase pair, but also produce the logically compatible relation when the same pair is presented in the opposite direction.
 
