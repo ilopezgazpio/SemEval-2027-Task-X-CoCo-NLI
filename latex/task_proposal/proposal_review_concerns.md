@@ -261,38 +261,39 @@ Questions for Authors
 
 > Is CoCo-NLI measuring the reversal curse (parametric, weight-level) or directional inferential coherence (in-context, compositional)?
 
+**Answer** DiCo-NLI measures directional consistency in fine-grained NLI. It is not a direct measurement of Berglund-style parametric, weight-level knowledge reversal. We have revised the framing and renamed the task accordingly: **DiCo-NLI: Directional Consistency in Fine-Grained Natural Language Inference**. Berglund et al. are used as conceptual and methodological motivation for reversal-based evaluation, not as a claim that the shared task directly measures the same parametric factual-reversal phenomenon.
 
 > Would you expect performance on the two to correlate, and if so, can you show it?
 
-**Answer**
+**Answer** We do not assume that performance on DiCo-NLI and performance on parametric-reversal probes must correlate at the level of individual systems. A model can plausibly succeed in one setting and fail in the other. However, our LREC pilot includes a seen/easy setting that is structurally close to Berglund et al.: models are exposed to one directional phrase-pair construct and evaluated on the reversed manipulated counterpart. The SemEval task focuses on the harder unseen setting, where both original and reversed constructs are held out. The relationship between DiCo-NLI scores and parametric reversal probes is therefore an empirical follow-up question, not an assumption of the task design.
 
 > Given that Rev is deterministic and gold labels are consistent under Rev, doesn't HardCoh collapse to paired accuracy?
 
-**Answer**
+**Answer** Yes, for the reversible subset, because the reversed gold label is deterministic, correctness in both directions entails consistency automatically. We now describe `HardCons` explicitly as paired directional correctness: a pair receives credit only if both the original and reversed instances are predicted correctly. We no longer present it as an independent consistency condition beyond correctness.
 
 > If so, what does it add over F1 or paired accuracy that SoftCoh doesn't already provide?
 
-**Answer**
+**Answer** `HardCons` is not intended to replace `SoftCons`. `SoftCons` is the main diagnostic metric for directional self-consistency independent of correctness. `HardCons` adds a stricter paired-correctness view that ordinary item-level `F-measure` does not provide. Two systems can have the same item-level score while differing in whether they solve complete reversible pairs. This distinction also appears empirically in our pilot system results: architecture families do not collapse to the same profile under the three metrics. For example, encoder-decoder models obtain lower average `F-measure` than encoder-only models on the positive combined track, but their average `SoftCons` is nearly identical, while decoder-only models drop much more sharply under `HardCons`. Thus the metrics expose different system behaviors rather than adding only redundant summaries. We therefore report the three metrics with distinct roles: `F-measure` for item-level label prediction, `SoftCons` for prediction-level directional consistency, and `HardCons` for paired correctness under reversal.
 
 >  Can the camera-ready include a small baseline table at minimum one model per architecture family, reporting F1, SoftCoh, HardCoh?
 
-**Answer**
+**Answer** Yes. We have added representative baseline results from the LREC pilot and will include them in the revised task documentation. The LREC paper is now available at https://lrec.elra.info/lrec2026-main-423. We report one representative model per architecture family and family-level mean ± sample standard deviation for encoder-only, decoder-only, and encoder-decoder systems, using `F-measure`, `SoftCons`, and `HardCons`.
 
 > How is contamination handled? Is the test set held-out from public PhrasIS, newly authored, perturbed, or canary-checked?
 
-**Answer**
+**Answer** The official test set will be built as a held-out grouped split, not as a random list of ordered instances. The grouping unit is the underlying source phrase pair: original direction, reversed direction, Spanish/Basque translations, and mixed-language variants derived from the same source pair are assigned to the same split. Thus, if a pair appears in the final test set, neither its original nor reversed form appears in released train/dev data. We also add `NEGATIVE_OTHER` noise items from non-reversible PhrasIS labels, hide final test labels during evaluation, delay gold release, document provenance in `data/README.md`, and audit exact/near-exact overlap with public examples and documentation.
 
 > For ES/EU translation: which MT system, how many annotators per item, what's the adjudication protocol, and have you audited how often translation flips the gold label on a pilot sample?
 
-**Answer**
+**Answer** The multilingual protocol now treats translation as label-preserving transfer, not only phrase-level translation. Candidate Spanish and Basque translations will be produced with multiple MT/LLM systems and automatically compared for triage. Two bilingual annotators per target language will independently validate a 100-source-pair pilot audit, checking translation adequacy, preservation of the NLI label, and preservation of the reversed label. We will report raw agreement, Cohen's kappa, and translation-induced label-flip counts. For the full release, each item is reviewed by one bilingual annotator, with second-annotator adjudication for low-confidence, ambiguous, or relation-changing cases. Items that cannot preserve the intended relation are corrected or removed.
 
 > Are cross-lingual submissions (e.g., train EN, evaluate EU) part of the evaluation, or is each track independent?
 
-**Answer**
+**Answer** The task now has four explicit tracks: English, Spanish, Basque, and Mixed multilingual. The first three are independent monolingual tracks. Cross-lingual transfer is handled explicitly in the Mixed multilingual track, where premise and hypothesis may appear in different languages among EN/ES/EU. Participants may submit to any subset of tracks. We will report per-track results and only compute macro-averages over clearly specified groups, such as monolingual EN/ES/EU or all four tracks.
 
 > How will the open-weight vs API tag be verified, and is it mandatory?
 
-**Answer**
+**Answer** The access-regime tag will be mandatory run metadata, but it will not define separate official leaderboards. Participants must report whether each run is `open-weight`, `commercial/API-based`, `private/closed`, or `hybrid/ensemble`, together with architecture family, model size when known, prompting/fine-tuning strategy, multilingual capability, and external data use. Verification will be partial and based on system papers, model/API names, released code/configuration files where available, and organizer sanity checks. Missing or inconsistent metadata may be marked as `undisclosed` or excluded from access-regime-based analysis.
 
 
 
