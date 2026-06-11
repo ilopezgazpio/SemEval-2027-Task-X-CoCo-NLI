@@ -486,20 +486,51 @@ Questions for Authors
 >    Will the bilingual annotators for the Spanish and Basque tracks be asked to verify the logical coherence of the reversed pairs in the target language, or only the fidelity of the translation?
 >    If a translated phrase pair loses its directional entailment relationship due to morphosyntactic differences (especially in Basque), how will such cases be handled?
 
-**Answer**
+**Answer** The bilingual annotators will verify both translation fidelity and preservation of the target logical relation. The translation protocol is therefore not limited to checking whether each phrase is fluent or faithful in isolation. Annotators will validate the phrase pair as an NLI instance, including the original direction and the reversed direction under the deterministic label-reversal operator.
+
+For each target language, Spanish and Basque, two bilingual annotators will independently validate a pilot audit of 100 source pairs. This audit will check: (i) phrase-level translation adequacy, (ii) preservation of the expected NLI label, and (iii) preservation of the reversed label after swapping premise and hypothesis. We will report raw agreement, Cohen's kappa, adjudication counts, and translation-induced label-flip rates.
+
+For the full release, each item will be reviewed by one bilingual annotator, with second-annotator adjudication for low-confidence, ambiguous, or relation-changing cases. If a translated pair loses its intended directional relation because of morphosyntactic differences, scope, case marking, or lexicalization differences, it will be corrected if possible. If the relation cannot be preserved reliably in the target language, the item will be removed from the official evaluation split.
 
 > 2. Starter kit baselines: Which specific models will be included in the starter kit?
 >   Will you provide pre-trained checkpoints, or only training scripts?
 >   Given the hyperparameter sensitivity reported in the pilot, will you provide recommended hyperparameter configurations for each architecture family?
 
-**Answer**
+**Answer** The starter kit is intended to provide runnable reference systems, not necessarily the strongest systems from the pilot. We will therefore prioritize smaller models from each architecture family to maximize the chance that participants can run them on modest GPU resources.
+
+The planned starter-kit baselines are:
+
+| Family | Planned baseline | Rationale |
+|---|---|---|
+| Encoder-only | `roberta-base` or `deberta-v3-base` | Compact supervised NLI baseline with standard fine-tuning |
+| Decoder-only | `OPT-125M` or `GPT-2 small` | Small causal-LM baseline suitable for low-resource GPU settings |
+| Encoder-decoder | `BART-base` or `Flan-T5-base` | Smaller sequence-to-sequence baseline covering the encoder-decoder family |
+
+For each baseline, we will provide the model identifier, preprocessing code, training/evaluation scripts, prediction format, scorer command, and recommended hyperparameter configuration. The documented configuration will include learning rate, batch size, number of epochs, maximum sequence length, optimizer, random seed policy, and model-selection criterion.
+
+Where redistribution and storage constraints allow it, we will also provide trained checkpoints. If checkpoint redistribution is not practical for a given model, we will provide the exact model ID, configuration files, and scripts needed to reproduce the baseline.
 
 > 3. Label distribution: What is the distribution of EQUIVALENCE, FORWARD-ENTAILMENT, and BACKWARD-ENTAILMENT labels in the pilot dataset?
 >    Is it balanced, and if not, how will you address potential class imbalance in the official task data?
 
-**Answer**
+**Answer** The reversible English source subset used in the pilot contains 1,946 source phrase pairs and is close to balanced:
+
+| Gold label | Source pairs | Percentage |
+|---|---:|---:|
+| `EQUIVALENCE` | 686 | 35.3 |
+| `FORWARD_ENTAILMENT` | 624 | 32.1 |
+| `BACKWARD_ENTAILMENT` | 636 | 32.7 |
+| **Total** | **1,946** | **100.0** |
+
+After adding the reversed counterpart for each source pair, the distribution remains balanced at the ordered-instance level. `EQUIVALENCE` maps to itself, while `FORWARD_ENTAILMENT` and `BACKWARD_ENTAILMENT` swap under the reversal operator. This reduces the risk that `HardCons` can be inflated by a majority-class strategy on the reversible subset.
+
+We will report label distributions for every official split and language in `data/README.md`. The `NEGATIVE_OTHER` items introduced from non-reversible PhrasIS labels will be controlled separately: they make the task less artificially clean, but they will not dominate the reversible labels and will not be included in `SoftCons` or `HardCons`.
 
 >4. Compositional dimension: Could you clarify what "compositional" means in the context of this task? Is the task specifically designed to probe compositional inference (e.g., adjective-noun compositions), or is the term used more broadly?
 >
 
-**Answer**
+**Answer** In this task, "compositional" refers to the phrase-level semantic units inherited from the iSTS/PhrasIS annotation lineage. The original iSTS data decomposes sentence-level STS examples into aligned chunks, including noun phrases, verb chains, prepositional phrases, adverbial expressions, and other phrase-level units. These chunks aggregate lexical and syntactic material into local semantic units.
+
+PhrasIS reannotates these aligned phrase pairs without sentence context using fine-grained Natural Logic-style labels. DiCo-NLI therefore evaluates inference over composed phrase meanings, rather than isolated words or full sentence pairs.
+
+The task is not restricted to a single construction type, such as adjective-noun or verb-argument composition, and it is not intended as a controlled benchmark of arbitrary compositional generalization. The official ranking evaluates fine-grained directional NLI and consistency under reversal across heterogeneous phrase-level units. Construction-specific analyses, for example by nominal modification, quantification, prepositional attachment, or verb-argument structure, can be included as secondary diagnostics where the categories are available or can be reliably inferred.
