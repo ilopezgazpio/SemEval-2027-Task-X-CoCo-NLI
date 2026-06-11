@@ -151,7 +151,7 @@ We will release the corresponding baseline scripts, documented hyperparameters, 
 
 A few more things worth raising.
 
-> (R1.6) Contamination is not discussed. PhrasIS has been public since 2024 and any frontier model trained through 2025-26 has plausibly ingested it.
+> (R1.7) Contamination is not discussed. PhrasIS has been public since 2024 and any frontier model trained through 2025-26 has plausibly ingested it.
 
 **Answer R1.7** We agree that contamination must be treated explicitly. PhrasIS has been described in the literature since 2024, and we cannot assume that large frontier models have not been exposed to some form of the resource or to examples from the paper. We will therefore not present the benchmark as contamination-free by default.
 
@@ -161,12 +161,19 @@ To reduce contamination risk, we will document the split construction in the `da
 
 Finally, we will make the contamination risk explicit in the task documentation. Since DiCo-NLI evaluates not only item-level `F-measure` but also paired directional consistency over reversed instances, memorization of isolated labels is less sufficient than in a standard static classification benchmark. Nevertheless, we agree with the reviewer that contamination can affect leaderboard interpretation, and we will report the construction protocol and contamination-control decisions together with the official release.
 
-> (R1.7) For a task whose scientific payload is measuring an LLM reasoning failure, the proposal needs at least a paragraph on how the test split is constructed unreleased items, newly written, perturbed, canary-checked, something.
+> (R1.8) For a task whose scientific payload is measuring an LLM reasoning failure, the proposal needs at least a paragraph on how the test split is constructed unreleased items, newly written, perturbed, canary-checked, something.
 
-** Answer R1.6**
+**Answer R1.8** This concern is related to contamination but concerns the concrete construction of the final evaluation split, so we address it explicitly. The official DiCo-NLI test set will be built as a held-out grouped split, not as a random list of ordered instances.
 
+The grouping unit will be the underlying source phrase pair. For every source pair `(A,B)`, all derived instances will be assigned to the same split: the original ordered item `(A,B)`, the reversed item `(B,A)`, the corresponding Spanish and Basque translations, and any mixed-language variants derived from that source pair. This prevents leakage where a model could see one direction, language, or variant of a pair during training and be evaluated on another variant during testing.
 
-Otherwise the leaderboard will reflect memorization as much as reasoning.
+Concretely, if a reversible pair appears in the final test set, neither its original direction nor its reversed counterpart will appear in the released training or development data. Likewise, multilingual versions of that same source pair will not be split across train/dev/test. This implements the hard/unseen setting from our LREC pilot as the official SemEval setup.
+
+We will also include `NEGATIVE_OTHER` items from non-reversible PhrasIS labels as noise in the label-prediction evaluation. These items will be split using the same grouped protocol and will be excluded from `SoftCons` and `HardCons`, which are defined only over reversible pairs.
+
+The final data release will include a `data/README.md` documenting the split construction, source provenance, label distributions, and the relation between source pairs and derived instances. Before release, we will audit exact and near-exact overlap with examples appearing in papers, task documentation, and public-facing material. Gold test labels will remain hidden during the competition and released only after the official evaluation period.
+
+This protocol is designed to make the leaderboard reflect generalization to held-out directional NLI constructs rather than memorization of isolated phrase-pair labels.
 
 > (R1.8) The translation protocol is underspecified in a way that matters for this specific task.
 
