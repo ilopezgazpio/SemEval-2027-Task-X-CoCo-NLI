@@ -242,7 +242,11 @@ The official ranking will remain based on task metrics, not on access regime. Th
 > (R1.13) The reference to Apaolaza et al. (2026) as in-press limits what reviewers can check, and for a proposal that leans this heavily on the pilot, 
 > a preprint link or appendix would have helped.
 
-**Answer R1.13** We aggree that we did not facilitate a revision of the cited work, we have now corrected that in the current project description.
+**Answer R1.13** We agree. The proposal relied too heavily on an in-press pilot paper without giving reviewers enough access to verify the empirical basis of the task. We should have included either a preprint link, an appendix, or a compact table of pilot results in the proposal itself.
+
+This has now been corrected. The LREC paper is publicly available here: https://lrec.elra.info/lrec2026-main-423. We have also added representative baseline results directly to the response/task documentation, including one model from each architecture family and family-level mean and standard deviation values. This ensures that the feasibility and difficulty of the task can be assessed without relying only on an inaccessible citation.
+
+In the revised proposal and repository documentation, the pilot study will be linked explicitly, and the task description will include the relevant metric definitions, baseline summaries, and the relation between the LREC hard/unseen evaluation setting and the planned SemEval setup.
 
 To be clear about what I do like: the paired-instance construction with a deterministic reversal operator is a genuinely good design choice,
 the formal definitions in the evaluation section are clean, HiTZ has a real track record on this kind of benchmark, 
