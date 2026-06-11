@@ -211,7 +211,22 @@ Thus, the multilingual tracks will not rely on the assumption that translation i
 > (R1.11) The cross-lingual evaluation story is also ambiguous. Are the three tracks independent, or is EN-EU transfer a first-class submission? 
 > This affects how participants build systems and whether the macro-average is meaningful.
 
-**Answer R1.11** We aggree with the reviewer in that the proposal did not clearly defined the tracks and evaluation. We have now clarified that in the readme description of the task. Which states...
+**Answer R1.11** We agree that the original proposal did not define the multilingual evaluation structure clearly enough. We have revised the task description to make the tracks explicit.
+
+The shared task will include four tracks:
+
+| Track | Description |
+|---|---|
+| English | Monolingual English premise-hypothesis pairs |
+| Spanish | Monolingual Spanish premise-hypothesis pairs |
+| Basque | Monolingual Basque premise-hypothesis pairs |
+| Mixed multilingual | Premise and hypothesis may appear in different languages among EN/ES/EU |
+
+The three monolingual tracks are independent evaluation tracks. Participants may submit to any subset of them, and results will be reported separately per language. Cross-lingual transfer is not implicitly mixed into those tracks.
+
+The cross-lingual setting will be evaluated explicitly through the fourth mixed multilingual track. This track is intended for systems that can handle language combinations across the premise and hypothesis, for example EN→ES, ES→EU, or EU→EN. This makes cross-lingual transfer a first-class evaluation condition without making it mandatory for teams participating only in monolingual tracks.
+
+For reporting, we will prioritize per-track leaderboards. We may additionally report macro-averages, but only over clearly specified groups: a monolingual macro-average over EN/ES/EU and, separately, an overall macro-average including the mixed multilingual track if appropriate. This avoids ambiguity about what a macro-average represents and lets participants interpret their results according to the setting they targeted.
 
 > (R1.12) Minor: the access-regime tag (open-weight vs API) is a nice analytical addition but you don't say how it's verified or whether it's required.
 
