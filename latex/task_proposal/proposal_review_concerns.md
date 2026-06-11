@@ -457,7 +457,11 @@ We will clarify this in the revised proposal. DiCo-NLI is compositional in this 
 
 > (R2.6) It would be helpful to clarify whether the task is intended to target specific forms of compositional inference (e.g., adjective-noun or verb-argument compositions), or whether the term is being used more broadly in contrast to sentence-level NLI.
 
-**Answer R2.6** 
+**Answer R2.6** The task is not restricted to one specific form of compositional inference, such as adjective-noun composition or verb-argument composition. The term is used more broadly to distinguish phrase-level fine-grained NLI from both word-level lexical relation prediction and full sentence-level NLI.
+
+The official prediction problem is defined over phrase pairs and their reversed counterparts, independently of the internal construction type of the phrase. This means that all eligible phrase pairs share the same label inventory and reversal operator: `EQUIVALENCE`, `FORWARD_ENTAILMENT`, and `BACKWARD_ENTAILMENT` for the reversible subset, plus `NEGATIVE_OTHER` for non-reversible/noise items.
+
+That said, the construction type is scientifically relevant. PhrasIS includes different phrase-level configurations, including nominal modification, noun-noun expressions, verb chains, prepositional phrases, quantificational expressions, and other chunk types inherited from the iSTS segmentation. We will document these categories where they are available or can be reliably inferred, and we may report diagnostic analyses by phrase type. However, these analyses will be secondary. The shared-task ranking will evaluate the general ability to assign fine-grained directional NLI labels and maintain consistency under reversal across heterogeneous phrase-level semantic units.
 
 
 # REFERENCES
