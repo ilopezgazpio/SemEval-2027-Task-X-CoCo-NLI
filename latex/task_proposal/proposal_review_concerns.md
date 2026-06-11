@@ -119,7 +119,7 @@ We also agree that the previous wording oversold the hard metric. Since the reve
 
 This revision should make the diagnostic role of `SoftCons` explicit while preserving `HardCons` as a useful stricter evaluation summary.
 
-> Third, and this is the one that most affects my score: there are no numbers. 
+> (R1.6) Third, and this is the one that most affects my score: there are no numbers. 
 > The proposal lists eight baseline architectures, cites a pilot, asserts there is clear room for improvement, and then asks reviewers to take all of that on faith while the pilot paper is in press and not accessible.
 > A compact three-row table one encoder, one decoder, one enc-dec, with F1/SoftCoh/HardCoh would have made the case concrete and would have let me verify the "room for improvement" claim myself.
 > Its absence is particularly awkward given that the whole argument for running the task is that current systems fail on it.
