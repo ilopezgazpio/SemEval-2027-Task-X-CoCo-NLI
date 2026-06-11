@@ -180,9 +180,19 @@ This protocol is designed to make the leaderboard reflect generalization to held
 "Semiautomatic translation by deep MT and bilingual annotators" doesn't say which system, how many annotators per item, or crucially, how the reversal operator is validated after translation.
 Basque case marking and Spanish clitic/scope interactions can plausibly shift entailment direction on short phrase pairs.
 
-**Answer R1.9** Short phrase pairs are not expected to be of difficulty for neural MT models and/or LLMs for translation. The phrase pairs will be translated by different systems. High jaccard agreements for translation will result in a high
-probability of correct translation while low jaccard probability will result in a low score. Expert annotators will revise the phrase pairs from low confidence to high confidence and annotate the percentage of errors with regard to the confidence score.
-The proportion between confidence and error is a good indicative measure of the complexity / performance of the task and we will react to the complexity of the task.
+**Answer R1.9** We agree that the original proposal underspecified the translation protocol. For this task, translation quality cannot be evaluated only as phrase-level fidelity: the translated pair must also preserve the intended directional NLI relation and its reversed counterpart under the label-reversal operator.
+
+We have therefore revised the multilingual data protocol as follows. First, candidate Spanish and Basque translations will be generated using multiple independent translation systems, including neural MT and LLM-based translation. The exact systems used will be documented in the data release. Each phrase will be translated without exposing translation systems to the source-side relation metadata, so that the translation step itself is not biased toward the expected label.
+
+Second, automatic agreement between candidate translations will be used as a triage signal, not as the final validation criterion. We will compute surface and normalized overlap signals, such as token/lemma Jaccard or related string-similarity measures, to identify high-disagreement cases that require closer inspection. However, we agree that such automatic scores are insufficient for Spanish and Basque, where morphology, case marking, clitics, and scope can affect the resulting relation.
+
+Third, validation will be performed by bilingual annotators at the phrase-pair level. We will have two bilingual annotators per target language. For each language, both annotators will independently validate a pilot audit of 100 source pairs. This audit will check: (i) phrase-level translation adequacy, (ii) preservation of the expected NLI label, and (iii) preservation of the deterministic reversed label after swapping premise and hypothesis. We will report raw agreement and Cohen's kappa on this pilot validation, together with the proportion of translation-induced label flips or unstable cases.
+
+For the full release, each translated item will be reviewed by one bilingual annotator. Items flagged as low-confidence by automatic agreement scores, judged ambiguous by the first annotator, or suspected of changing the directional relation will be reviewed or adjudicated by the second annotator. A translated pair will only be retained if the original and reversed target-language instances remain compatible with the expected label-reversal mapping.
+
+If the problem is a bad translation, the item will be corrected. If the target-language construction naturally changes or destabilizes the entailment relation, the item will be removed from the official evaluation split rather than silently kept with the English-derived label.
+
+Finally, the data documentation will report the translation systems used, the validation protocol, annotator agreement on the pilot audit, adjudication counts, and translation-induced label-flip statistics. This makes the multilingual extension auditable and ensures that the Spanish and Basque tracks evaluate directional consistency rather than artifacts of translation.
 
 
 > (R1.10) The "Everyone is hungry / Someone is hungry" example is fine in English under a generic reading, but generic/specific scope is exactly the kind of thing that translation destabilizes.
