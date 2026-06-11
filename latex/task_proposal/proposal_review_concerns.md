@@ -269,7 +269,9 @@ Questions for Authors
 
 > Given that Rev is deterministic and gold labels are consistent under Rev, doesn't HardCoh collapse to paired accuracy?
 
-**Answer** Yes, for the reversible subset, because the reversed gold label is deterministic, correctness in both directions entails consistency automatically. We now describe `HardCons` explicitly as paired directional correctness: a pair receives credit only if both the original and reversed instances are predicted correctly. We no longer present it as an independent consistency condition beyond correctness.
+**Answer** Yes, for the reversible subset, because the reversed gold label is deterministic, correctness in both directions entails consistency automatically. In that strict mathematical sense, `HardCons` is equivalent to paired accuracy over reversible pairs. We now describe it explicitly as **paired directional correctness** rather than as an independent consistency condition beyond correctness.
+
+Its value is that the pairing is not arbitrary: it is defined by the label-reversal operator and by the original/reversed structure of the benchmark. `HardCons` changes the unit of evaluation from isolated ordered instances to reversible semantic units. A system receives credit only if it solves both directions of the same relation, and `NEGATIVE_OTHER` items are excluded because they do not have a deterministic reversed counterpart. Thus, although `HardCons` coincides numerically with paired accuracy in this setup, it operationalizes the task-specific notion of correctness under reversal and makes the comparison with `SoftCons` explicit: `SoftCons` asks whether predictions are directionally compatible regardless of truth, while `HardCons` asks whether the reversible relation is correctly solved in both directions.
 
 > If so, what does it add over F1 or paired accuracy that SoftCoh doesn't already provide?
 
