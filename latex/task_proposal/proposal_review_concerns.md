@@ -124,8 +124,29 @@ This revision should make the diagnostic role of `SoftCons` explicit while prese
 > A compact three-row table one encoder, one decoder, one enc-dec, with F1/SoftCoh/HardCoh would have made the case concrete and would have let me verify the "room for improvement" claim myself.
 > Its absence is particularly awkward given that the whole argument for running the task is that current systems fail on it.
 
-**Answer R1.5** We agree with the reviewer in that there is no excuse for not having incorporated some details on the results regarding our in press LREC paper, we expected preprints to be accessible at the time of the call for proposals submission.
-We summarize here the results for our baseline systems of the LREC paper, as stated, there is still room for improvement with more efficient models. Also, we will include several of these models as starter kits for the task.
+**Answer R1.6** We agree with the reviewer. The proposal should have included a compact baseline table rather than relying on a citation to an in-press pilot paper. At the time of submission, the LREC paper was not yet externally available, but this does not remove the need to provide enough empirical evidence inside the proposal itself. The pilot paper is now available here: https://lrec.elra.info/lrec2026-main-423
+
+We have now added representative pilot results to the task documentation and will include them in the revised proposal/task description. We include two summaries below: first, one representative high-performing model from each architecture family; second, the mean and sample standard deviation across all evaluated models in each family. This avoids relying on a single cherry-picked run while keeping the table compact. `F-measure` corresponds to standard label prediction on the positive combined test track. `SoftCons` and `HardCons` correspond to the unseen/hard directional-consistency evaluation on the positive combined track, which is the setting closest to the planned SemEval evaluation.
+
+Representative models:
+
+| Architecture family | Representative model | F-measure | SoftCons | HardCons |
+|---|---|---:|---:|---:|
+| Encoder-only | DeBERTa v3-base | 0.75 | 0.84 | 0.79 |
+| Decoder-only | OPT-125M | 0.61 | 0.65 | 0.58 |
+| Encoder-decoder | BART-large | 0.68 | 0.80 | 0.72 |
+
+Family-level mean ± sample standard deviation:
+
+| Architecture family | F-measure | SoftCons | HardCons |
+|---|---:|---:|---:|
+| Encoder-only | 0.713 ± 0.031 | 0.770 ± 0.049 | 0.721 ± 0.048 |
+| Decoder-only | 0.583 ± 0.038 | 0.568 ± 0.060 | 0.498 ± 0.070 |
+| Encoder-decoder | 0.655 ± 0.024 | 0.768 ± 0.025 | 0.693 ± 0.019 |
+
+These results support the feasibility of the task while also showing clear room for improvement. Encoder models perform strongest overall, but even the best representative encoder does not solve the hard/unseen directional setting. Decoder-only models lag substantially, especially under `HardCons`, and encoder-decoder models are competitive but still below the strongest encoders. The family-level means show that these are not isolated model choices: architecture family matters systematically in the pilot.
+
+We will release the corresponding baseline scripts, documented hyperparameters, and scorer as part of the starter kit. At minimum, the starter kit will include one tuned encoder baseline and one decoder or encoder-decoder baseline; our goal is to include representative models from all three architecture families.
 
 
 A few more things worth raising.
