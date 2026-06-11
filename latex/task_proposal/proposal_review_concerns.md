@@ -107,8 +107,17 @@ In the revised task description, we therefore report `F-measure` for standard la
 > I think the paper would be stronger if it led with the F1 vs SoftCoh gap as the diagnostic signature and presented HardCoh honestly as paired accuracy.
 > As written, HardCoh is oversold.
 
-**Answer R1.5** We agree that softcoh provides the more novel idea, but as we already include the F measure along our evaluation we think accuracy doesn't provide much more information, and in that direction hardcoh is more stricter than accuracy
-and it is conceptually better understand after softcoh is introduced.
+**Answer R1.5** We agree with the reviewer that `SoftCons` is the metric that most directly isolates the novel diagnostic dimension of the task. `F-measure` evaluates whether individual ordered instances are labeled correctly, whereas `SoftCons` evaluates whether a model's predictions are mutually compatible under reversal, independently of whether those predictions are correct. The contrast between these two metrics is therefore central: a model may obtain reasonable label-level performance while still producing directionally inconsistent predictions, or it may be internally consistent but systematically wrong.
+
+We have revised the task description to foreground this point. In the updated framing, `F-measure` is the standard label-prediction metric, `SoftCons` is the main diagnostic metric for directional self-consistency, and `HardCons` is described more conservatively as paired directional correctness over reversible instances.
+
+We also agree that the previous wording oversold the hard metric. Since the reversed gold label is deterministic, `HardCons` is not an independent consistency axis beyond correctness; it is a strict paired-correctness measure. We keep it because it answers a different practical question from `F-measure`: whether a system solves both directions of a reversible relation as a unit. However, the revised proposal will no longer present `HardCons` as conceptually independent from correctness. Instead, the task analysis will emphasize the joint interpretation of the three scores:
+
+- `F-measure`: item-level label correctness;
+- `SoftCons`: prediction-level directional consistency, regardless of correctness;
+- `HardCons`: paired correctness under reversal.
+
+This revision should make the diagnostic role of `SoftCons` explicit while preserving `HardCons` as a useful stricter evaluation summary.
 
 > Third, and this is the one that most affects my score: there are no numbers. 
 > The proposal lists eight baseline architectures, cites a pilot, asserts there is clear room for improvement, and then asks reviewers to take all of that on faith while the pilot paper is in press and not accessible.
