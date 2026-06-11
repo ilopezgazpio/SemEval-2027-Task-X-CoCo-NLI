@@ -230,9 +230,13 @@ For reporting, we will prioritize per-track leaderboards. We may additionally re
 
 > (R1.12) Minor: the access-regime tag (open-weight vs API) is a nice analytical addition but you don't say how it's verified or whether it's required.
 
-**Answer R1.12** A code ethics will be released in alongside participation in the task. We trust participants in following the proposed code of ethics at the system results submission and evaluation period.
-Depending on the categories of submission we will categorize and review. At first we plan to categoriza participating systems according to model size, model architecture type, multilingual abilities, black box API or open weight.
-Subject to participant submissions.
+**Answer R1.12** We agree that the access-regime tag must be specified more clearly. In the revised task documentation, this information will be mandatory run metadata, but it will not define separate official leaderboards. The purpose is post-task analysis: we want to compare whether performance patterns differ across open-weight models, API-based systems, private closed models, and hybrid systems.
+
+Participants will be required to report the access regime of each official run in their submission metadata and system description paper. The planned categories are: `open-weight`, `commercial/API-based`, `private/closed`, and `hybrid/ensemble`. We will also ask teams to report architecture family, model size when known, prompting/fine-tuning strategy, multilingual capability, and external data use.
+
+Verification will necessarily be partial, especially for commercial/API-based systems. We will therefore not claim full independent verification of all access-regime tags. Instead, the tag will be checked against the system description paper, model names, API provider information, released code/configuration files where available, and organizer sanity checks. Inconsistent or missing metadata may lead to a run being marked as `undisclosed` or excluded from access-regime-based analysis.
+
+The official ranking will remain based on task metrics, not on access regime. The access-regime tag is an analytical variable intended to make the overview paper more informative and to avoid conflating very different system types in the post-task discussion.
 
 
 > (R1.13) The reference to Apaolaza et al. (2026) as in-press limits what reviewers can check, and for a proposal that leans this heavily on the pilot, 
