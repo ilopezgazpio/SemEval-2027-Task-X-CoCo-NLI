@@ -153,8 +153,13 @@ A few more things worth raising.
 
 > (R1.6) Contamination is not discussed. PhrasIS has been public since 2024 and any frontier model trained through 2025-26 has plausibly ingested it.
 
-**Answer R1.6** Investigations on phrasIS have been done since 2024 but the dataset was not fully released until few months ago for the LREC conference. This reduces changes to frontier models digesting it. We will also devote some of our
-revision budget for generation of new pairs. Also note that the multilingual version of this dataset is to be created specifically for the task
+**Answer R1.7** We agree that contamination must be treated explicitly. PhrasIS has been described in the literature since 2024, and we cannot assume that large frontier models have not been exposed to some form of the resource or to examples from the paper. We will therefore not present the benchmark as contamination-free by default.
+
+At the same time, the official DiCo-NLI evaluation set is not simply the public PhrasIS dataset reused as-is. The SemEval data will be a task-specific construction: we select the reversible labels, generate paired reversed instances through the deterministic reversal operator, add `NEGATIVE_OTHER` samples from the non-reversible PhrasIS labels as noise, create new Spanish and Basque versions for the task, and define new trial/final splits. The multilingual and mixed-language tracks in particular will be newly produced for the shared task and will not correspond to a pre-existing public benchmark.
+
+To reduce contamination risk, we will document the split construction in the `data/` folder and apply several safeguards: hidden final test labels during the competition, delayed release of gold labels, a held-out final evaluation split generated after task specification, provenance metadata for all items, and an audit of exact or near-exact overlap with examples that have appeared in papers or public documentation.
+
+Finally, we will make the contamination risk explicit in the task documentation. Since DiCo-NLI evaluates not only item-level `F-measure` but also paired directional consistency over reversed instances, memorization of isolated labels is less sufficient than in a standard static classification benchmark. Nevertheless, we agree with the reviewer that contamination can affect leaderboard interpretation, and we will report the construction protocol and contamination-control decisions together with the official release.
 
 > (R1.7) For a task whose scientific payload is measuring an LLM reasoning failure, the proposal needs at least a paragraph on how the test split is constructed unreleased items, newly written, perturbed, canary-checked, something.
 
