@@ -433,7 +433,19 @@ The `NEGATIVE_OTHER` items introduced from non-reversible PhrasIS labels will be
 > (R2.4) Starter kit specifics. The proposal mentions that a starter kit will be provided, but does not specify which baseline models will be included.
 >  Given the hyperparameter sensitivity noted in the pilot study, providing at least one reasonably tuned encoder-only and one decoder-only baseline with documented hyperparameter settings would likely lower the barrier to participation for teams with limited compute resources.
 
-**Answer R2.4** We will prepare our LREC submission models as starter kits for participating in the task. At least we will include a model of each kind in the architecture types (enoder, decoder and encoder-decoder)
+**Answer R2.4** We agree that the starter kit should be specified more concretely. The starter kit is intended to provide runnable and reproducible reference systems, not necessarily the strongest systems from the pilot. For that reason, we will prioritize smaller models from each architecture family so that participants with limited GPU resources can execute the baselines.
+
+We will release the official scorer, format validator, data-loading utilities, and baseline training/evaluation scripts. The planned starter-kit baselines are:
+
+| Family | Planned baseline | Rationale |
+|---|---|---|
+| Encoder-only | `roberta-base` or `deberta-v3-base` | Compact supervised NLI baseline with standard fine-tuning |
+| Decoder-only | `OPT-125M` or `GPT-2 small` | Small causal-LM baseline suitable for low-resource GPU settings |
+| Encoder-decoder | `BART-base` or `Flan-T5-base` | Smaller sequence-to-sequence baseline covering the encoder-decoder family |
+
+For each baseline, we will provide the model identifier, preprocessing steps, train/dev split handling, prediction format, evaluation command, and recommended hyperparameter configuration. The documented configuration will include learning rate, batch size, number of epochs, maximum sequence length, optimizer, random seed policy, and model-selection criterion.
+
+Where redistribution and storage constraints allow it, we will also provide trained checkpoints. If checkpoint redistribution is not practical for a given model, we will provide the exact model ID, configuration files, and scripts needed to reproduce the baseline. This should make the starter kit useful for participation and sanity checking without requiring participants to tune large models or reproduce the strongest pilot systems.
 
 > (R2.5) Scope of the "compositional" claim. The task title includes the term "Compositional," but the proposal does not explicitly elaborate on the compositional dimension beyond the phrase-level granularity of PhrasIS.
 
