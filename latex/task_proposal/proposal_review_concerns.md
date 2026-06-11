@@ -103,7 +103,7 @@ More generally, if item-level correctness were independent with probability `p`,
 
 In the revised task description, we therefore report `F-measure` for standard label prediction, `SoftCons` for self-consistency independent of correctness, and `HardCons` for paired directional correctness over reversible instances.
 
-> SoftCoh is the metric doing real work: it separates self-consistency from correctness and can catch a model that's reliably wrong in a coherent way.
+> (R1.5) SoftCoh is the metric doing real work: it separates self-consistency from correctness and can catch a model that's reliably wrong in a coherent way.
 > I think the paper would be stronger if it led with the F1 vs SoftCoh gap as the diagnostic signature and presented HardCoh honestly as paired accuracy.
 > As written, HardCoh is oversold.
 
