@@ -449,7 +449,11 @@ Where redistribution and storage constraints allow it, we will also provide trai
 
 > (R2.5) Scope of the "compositional" claim. The task title includes the term "Compositional," but the proposal does not explicitly elaborate on the compositional dimension beyond the phrase-level granularity of PhrasIS.
 
-**Answer R2.5** Explain the compositional term in the current task framework.
+**Answer R2.5** We agree that the compositional dimension should be made explicit. In this task, "compositional" is not used to claim a controlled benchmark of arbitrary compositional generalization, where systems are tested on systematically generated syntactic templates. Rather, the term comes from the iSTS/PhrasIS annotation lineage: the original sentence-level STS data was decomposed into aligned semantic segments, or chunks, and these chunks correspond to phrase-level units whose meaning is built from smaller lexical and syntactic material.
+
+The Interpretable STS framework explicitly moves beyond word-level similarity by annotating typed alignments between sentence segments. These segments include noun phrases, verb chains, prepositional phrases, adverbial expressions, and other phrase-level units. The resulting phrase pairs therefore encode how concepts are aggregated into larger local meanings inside a sentence. PhrasIS then reannotates these aligned phrase pairs without sentence context using fine-grained Natural Logic-style labels, making it possible to evaluate whether systems recognize the inferential relation between composed phrase meanings.
+
+We will clarify this in the revised proposal. DiCo-NLI is compositional in this phrase-level sense: it evaluates inference over composed semantic units, not isolated words and not full sentence pairs. However, to avoid overclaiming, the shared task will be framed primarily as **Directional Consistency in Fine-Grained Natural Language Inference**. Analyses by construction type, such as nominal modification, quantification, verb-argument structure, or prepositional attachment, can be included as diagnostic analyses, but the official task target remains fine-grained directional NLI and consistency under reversal.
 
 > (R2.6) It would be helpful to clarify whether the task is intended to target specific forms of compositional inference (e.g., adjective-noun or verb-argument compositions), or whether the term is being used more broadly in contrast to sentence-level NLI.
 
