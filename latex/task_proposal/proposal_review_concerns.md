@@ -175,38 +175,38 @@ The final data release will include a `data/README.md` documenting the split con
 
 This protocol is designed to make the leaderboard reflect generalization to held-out directional NLI constructs rather than memorization of isolated phrase-pair labels.
 
-> (R1.8) The translation protocol is underspecified in a way that matters for this specific task.
+> (R1.9) The translation protocol is underspecified in a way that matters for this specific task.
 
 "Semiautomatic translation by deep MT and bilingual annotators" doesn't say which system, how many annotators per item, or crucially, how the reversal operator is validated after translation.
 Basque case marking and Spanish clitic/scope interactions can plausibly shift entailment direction on short phrase pairs.
 
-**Answer R1.8** Short phrase pairs are not expected to be of difficulty for neural MT models and/or LLMs for translation. The phrase pairs will be translated by different systems. High jaccard agreements for translation will result in a high
+**Answer R1.9** Short phrase pairs are not expected to be of difficulty for neural MT models and/or LLMs for translation. The phrase pairs will be translated by different systems. High jaccard agreements for translation will result in a high
 probability of correct translation while low jaccard probability will result in a low score. Expert annotators will revise the phrase pairs from low confidence to high confidence and annotate the percentage of errors with regard to the confidence score.
 The proportion between confidence and error is a good indicative measure of the complexity / performance of the task and we will react to the complexity of the task.
 
 
-> (Answer R1.9) The "Everyone is hungry / Someone is hungry" example is fine in English under a generic reading, but generic/specific scope is exactly the kind of thing that translation destabilizes.
+> (R1.10) The "Everyone is hungry / Someone is hungry" example is fine in English under a generic reading, but generic/specific scope is exactly the kind of thing that translation destabilizes.
 > With 200 expert hours budgeted for ES+EU combined over roughly 4k 2 items, I'd want the protocol pinned down and a translation-induced label-flip audit on a pilot sample.
 
-**Answer R1.9** Please note the generic/specific relation information metadata will not be used at the time of translation. Translation of specific short snippets of text is direct for all languages and should be trivial for LLMs or neural MT systems in isolation of the rest of the pair information.
+**Answer R1.10** Please note the generic/specific relation information metadata will not be used at the time of translation. Translation of specific short snippets of text is direct for all languages and should be trivial for LLMs or neural MT systems in isolation of the rest of the pair information.
 The translation of "Everyone is hungry" to spanish is that of: "Todos están hambrientos", and to basque is "Denak gose dira", which is a direct trivial translation. We don't intend to include any relation or metadata information that can lead to confusion in the translation step.
 
-> (R1.10) The cross-lingual evaluation story is also ambiguous. Are the three tracks independent, or is EN-EU transfer a first-class submission? 
+> (R1.11) The cross-lingual evaluation story is also ambiguous. Are the three tracks independent, or is EN-EU transfer a first-class submission? 
 > This affects how participants build systems and whether the macro-average is meaningful.
 
-**Answer R1.10** We aggree with the reviewer in that the proposal did not clearly defined the tracks and evaluation. We have now clarified that in the readme description of the task. Which states...
+**Answer R1.11** We aggree with the reviewer in that the proposal did not clearly defined the tracks and evaluation. We have now clarified that in the readme description of the task. Which states...
 
-> R1.11 Minor: the access-regime tag (open-weight vs API) is a nice analytical addition but you don't say how it's verified or whether it's required.
+> (R1.12) Minor: the access-regime tag (open-weight vs API) is a nice analytical addition but you don't say how it's verified or whether it's required.
 
-**Answer R1.11** A code ethics will be released in alongside participation in the task. We trust participants in following the proposed code of ethics at the system results submission and evaluation period.
+**Answer R1.12** A code ethics will be released in alongside participation in the task. We trust participants in following the proposed code of ethics at the system results submission and evaluation period.
 Depending on the categories of submission we will categorize and review. At first we plan to categoriza participating systems according to model size, model architecture type, multilingual abilities, black box API or open weight.
 Subject to participant submissions.
 
 
-> (R1.12 )The reference to Apaolaza et al. (2026) as in-press limits what reviewers can check, and for a proposal that leans this heavily on the pilot, 
+> (R1.13) The reference to Apaolaza et al. (2026) as in-press limits what reviewers can check, and for a proposal that leans this heavily on the pilot, 
 > a preprint link or appendix would have helped.
 
-**Answer R1.12** We aggree that we did not facilitate a revision of the cited work, we have now corrected that in the current project description.
+**Answer R1.13** We aggree that we did not facilitate a revision of the cited work, we have now corrected that in the current project description.
 
 To be clear about what I do like: the paired-instance construction with a deterministic reversal operator is a genuinely good design choice,
 the formal definitions in the evaluation section are clean, HiTZ has a real track record on this kind of benchmark, 
@@ -348,25 +348,25 @@ While the proposal is strong overall, the following points deserve attention in 
 
 **Answer R2.2** Link with previous responses with the jaccard coefficient / any other novel ideas ??
 
-> (Answer R2.3) Label balance across languages. The proposal reports that PhrasIS contains 1,946 English source pairs with reversible labels,
+> (R2.3) Label balance across languages. The proposal reports that PhrasIS contains 1,946 English source pairs with reversible labels,
 > yielding approximately 4k ordered instances for the English track.
 > It would be helpful to report the distribution of EQUIVALENCE, FORWARD-ENTAILMENT, and BACKWARD-ENTAILMENT labels in the pilot data.
 > If the distribution is highly skewed, the organizers may wish to consider stratified sampling or related balancing strategies to avoid inflating HardCoh scores through majority-class behaviour.
 
 **Answer R2.3** We agree with the reviewer in that we include here and will include statistics of the data in the data folder of the current task
 
-> (R2.3) Starter kit specifics. The proposal mentions that a starter kit will be provided, but does not specify which baseline models will be included.
+> (R2.4) Starter kit specifics. The proposal mentions that a starter kit will be provided, but does not specify which baseline models will be included.
 >  Given the hyperparameter sensitivity noted in the pilot study, providing at least one reasonably tuned encoder-only and one decoder-only baseline with documented hyperparameter settings would likely lower the barrier to participation for teams with limited compute resources.
 
-**Answer R2.3** We will prepare our LREC submission models as starter kits for participating in the task. At least we will include a model of each kind in the architecture types (enoder, decoder and encoder-decoder)
+**Answer R2.4** We will prepare our LREC submission models as starter kits for participating in the task. At least we will include a model of each kind in the architecture types (enoder, decoder and encoder-decoder)
 
-> (R2.4) Scope of the "compositional" claim. The task title includes the term "Compositional," but the proposal does not explicitly elaborate on the compositional dimension beyond the phrase-level granularity of PhrasIS.
+> (R2.5) Scope of the "compositional" claim. The task title includes the term "Compositional," but the proposal does not explicitly elaborate on the compositional dimension beyond the phrase-level granularity of PhrasIS.
 
-**Answer R2.4** Explain the compositional term in the current task framework.
+**Answer R2.5** Explain the compositional term in the current task framework.
 
-> (R2.5) It would be helpful to clarify whether the task is intended to target specific forms of compositional inference (e.g., adjective-noun or verb-argument compositions), or whether the term is being used more broadly in contrast to sentence-level NLI.
+> (R2.6) It would be helpful to clarify whether the task is intended to target specific forms of compositional inference (e.g., adjective-noun or verb-argument compositions), or whether the term is being used more broadly in contrast to sentence-level NLI.
 
-**Answer R2.5** 
+**Answer R2.6** 
 
 
 # REFERENCES
