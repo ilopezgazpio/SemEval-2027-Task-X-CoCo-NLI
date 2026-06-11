@@ -6,7 +6,9 @@
 
 DiCo-NLI is a SemEval-2027 shared task on **directional consistency** in fine-grained Natural Language Inference.
 
-DiCo-NLI evaluates whether NLI systems make **consistent direction-sensitive decisions** over paired phrase instances. Following the spirit of [Berglund et al.'s Reversal Curse work](https://proceedings.iclr.cc/paper_files/paper/2024/hash/5178b2f2d7c44aa390c0777dc77b3f0c-Abstract-Conference.html), the task treats reversal as a controlled stress test for semantic generalization: a system should not only identify the correct relation for an ordered phrase pair, but also produce the logically compatible relation when the same pair is presented in the opposite direction.
+DiCo-NLI evaluates whether NLI systems make **consistent direction-sensitive decisions** over paired phrase instances. Following the spirit of [Berglund et al.'s Reversal Curse work](https://proceedings.iclr.cc/paper_files/paper/2024/hash/5178b2f2d7c44aa390c0777dc77b3f0c-Abstract-Conference.html), the task treats reversal as a controlled stress test for semantic generalization: a system should not only identify the correct relation for an ordered phrase pair, but also produce the compatible relation when the same pair is presented in the opposite direction.
+
+The task is inspired by reversal-based evaluation, but it is not a direct test of Berglund-style parametric factual reversal. DiCo-NLI is a fine-grained NLI task: both phrases are given to the system, and the target is the label relation between them.
 
 **If you use our data, please cite:**
 
@@ -15,7 +17,7 @@ TODO: add official task citation once available.
 ```
 
 - **Competition website:** TODO: CodaBench link.
-- **Questions or issues:** open a [GitHub issue](https://github.com/ilopezgazpio/SemEval-2027-Task-X-CoCo-NLI/issues) or email `inigo.lopez@ehu.eus`.
+- **Questions or issues:** open a [GitHub issue](../../issues) or email `inigo.lopez@ehu.eus`.
 - **Data release:** TODO: Zenodo link.
 - **Task status:** conditionally accepted for SemEval 2027.
 
@@ -27,7 +29,9 @@ TODO.
 
 Standard NLI benchmarks usually evaluate whether a model predicts the correct label for a single ordered pair. DiCo-NLI adds a paired requirement: if a model predicts a relation for `(premise, hypothesis)`, its prediction for `(hypothesis, premise)` should be compatible with the logical reversal of that relation.
 
-The task uses short phrase pairs derived from PhrasIS, a fine-grained phrase inference and similarity benchmark built from naturally occurring image captions and news headlines. DiCo-NLI focuses on the reversible subset of PhrasIS:
+The task uses short phrase pairs derived from PhrasIS, a fine-grained phrase inference and similarity benchmark built from naturally occurring image captions and news headlines. PhrasIS follows the Interpretable STS annotation lineage: sentence-level STS examples are decomposed into aligned chunks, including noun phrases, verb chains, prepositional phrases, adverbial expressions, and other phrase-level units. DiCo-NLI is therefore phrase-level and compositional in this specific sense: it evaluates inference over semantic units built from smaller lexical and syntactic material, not isolated words and not full sentence pairs.
+
+DiCo-NLI focuses on the reversible subset of PhrasIS:
 
 | Label | Reversed label |
 |-------|----------------|
@@ -46,6 +50,19 @@ Example:
 
 This design probes whether models rely on shallow similarity cues or maintain direction-aware semantic structure. A model may be correct on isolated items but inconsistent under reversal; it may also be internally consistent but wrong. DiCo-NLI reports both behaviors explicitly.
 
+The reversible English source subset used in the pilot contains 1,946 source phrase pairs and is close to balanced:
+
+| Gold label | Source pairs | Percentage |
+|------------|-------------:|-----------:|
+| `EQUIVALENCE` | 686 | 35.3 |
+| `FORWARD_ENTAILMENT` | 624 | 32.1 |
+| `BACKWARD_ENTAILMENT` | 636 | 32.7 |
+| **Total** | **1,946** | **100.0** |
+
+After adding the reversed counterpart for each source pair, the distribution remains balanced at the ordered-instance level: `EQUIVALENCE` maps to itself, while `FORWARD_ENTAILMENT` and `BACKWARD_ENTAILMENT` swap under the reversal operator.
+
+## Data Construction
+
 The task will release trial and final data under a documented `data/` folder once the task package is ready. The expected structure is:
 
 ```text
@@ -60,6 +77,10 @@ data/
 
 The data documentation will specify label distributions, source provenance, split construction, multilingual translation/adjudication details, and contamination-control notes.
 
+The official split will be grouped by underlying source phrase pair. For every source pair `(A, B)`, all derived instances will be assigned to the same split: the original ordered item `(A, B)`, the reversed item `(B, A)`, Spanish and Basque translations, and mixed-language variants. This prevents leakage where one direction, language, or variant of a source pair appears in training while another appears in the official evaluation split.
+
+The final evaluation labels will be hidden during the competition and released only after the evaluation phase. We will also document provenance and audit exact or near-exact overlap with examples that appear in papers or public documentation. This does not make the benchmark contamination-free, but it makes the construction protocol explicit and reduces avoidable leakage.
+
 # Tracks
 
 DiCo-NLI will include four tracks.
@@ -71,7 +92,11 @@ DiCo-NLI will include four tracks.
 | 3 | Basque | Monolingual Basque phrase-pair NLI. |
 | 4 | Mixed multilingual | Premise and hypothesis may appear in any EN/ES/EU language combination. This track targets cross-lingual directional consistency. |
 
-The Spanish and Basque data will be produced from the English source items through translation plus bilingual expert verification. Verification will check not only translation fidelity, but also whether the directional entailment relation is preserved after translation. Items whose logical relation is unstable after translation will be corrected, relabeled if appropriate, or removed from the official split.
+The English, Spanish, and Basque tracks are independent monolingual tracks. Cross-lingual transfer is evaluated explicitly in the Mixed multilingual track. Participants may submit to any subset of tracks. Results will be reported per track; any macro-average will specify exactly which tracks it aggregates.
+
+The Spanish and Basque data will be produced from the English source items through translation plus bilingual expert verification. Verification will check not only translation fidelity, but also whether the directional entailment relation is preserved after translation. Items whose relation is unstable after translation will be corrected or removed from the official split.
+
+For each target language, two bilingual annotators will independently validate a pilot audit of 100 source pairs. The audit will check phrase-level translation adequacy, preservation of the expected NLI label, and preservation of the reversed label after swapping premise and hypothesis. We will report raw agreement, Cohen's kappa, adjudication counts, and translation-induced label-flip rates. For the full release, each translated item will be reviewed by one bilingual annotator, with second-annotator adjudication for low-confidence, ambiguous, or relation-changing cases.
 
 # Evaluation
 
@@ -88,9 +113,9 @@ The official scorer will report:
 
 | Metric | What it measures |
 |--------|------------------|
-| `F-measure` | Standard label-prediction quality. The final scorer will document whether the official variant is weighted, macro, or a combination. |
+| `F-measure` | Standard item-level label-prediction quality. The pilot reports weighted F-measure; final scorer details and any macro/composite variants will be documented before evaluation. |
 | `SoftCons` | Directional self-consistency under the reversal operator, independent of gold correctness. |
-| `HardCons` | Paired correctness under reversal: both directions must be predicted correctly. Because the reversed gold label is deterministic, this is a strict paired-accuracy/consistency measure. |
+| `HardCons` | Paired directional correctness under reversal: both directions must be predicted correctly. Because the reversed gold label is deterministic, this is a strict paired-accuracy measure over reversible pairs. |
 
 `NEGATIVE_OTHER` items will be included in the standard label-prediction evaluation. They will not be included in `SoftCons` or `HardCons`, which are defined only over reversible pairs with `EQUIVALENCE`, `FORWARD_ENTAILMENT`, and `BACKWARD_ENTAILMENT` labels.
 
@@ -115,7 +140,7 @@ For an item `x` and its reversed counterpart `x_rev`, with system prediction fun
 SoftCons(x) = 1 iff f(x) = Rev(f(x_rev))
 ```
 
-`HardCons` is stricter. It requires the same directional compatibility condition as `SoftCons`, but also requires both predictions to match the gold labels. In practice, because the gold label of the reversed item is produced by a deterministic reversal operator, `HardCons` measures whether the system gets both members of the reversible pair correct.
+`HardCons` is stricter. It requires both predictions to match the gold labels. In practice, because the gold label of the reversed item is produced by a deterministic reversal operator, `HardCons` measures whether the system gets both members of the reversible pair correct. It changes the unit of evaluation from isolated ordered instances to complete reversible phrase-pair units.
 
 For example:
 
@@ -132,9 +157,27 @@ Scores will be reported per track. We also plan to report model metadata in the 
 
 | Metadata | Values |
 |----------|--------|
-| Access regime | open-weight, commercial/API-based, other |
+| Access regime | open-weight, commercial/API-based, private/closed, hybrid/ensemble |
 | Architecture family | encoder-only, decoder-only, encoder-decoder, other |
 | External data use | none, public data, private data |
+
+## Pilot Results
+
+The LREC pilot paper is available at https://lrec.elra.info/lrec2026-main-423. The pilot evaluated encoder-only, decoder-only, and encoder-decoder systems on the English reversal-aware benchmark. Representative results on the positive combined track show that the task is feasible but not saturated:
+
+| Architecture family | Representative model | F-measure | SoftCons | HardCons |
+|---------------------|----------------------|----------:|---------:|---------:|
+| Encoder-only | DeBERTa v3-base | 0.75 | 0.84 | 0.79 |
+| Decoder-only | OPT-125M | 0.61 | 0.65 | 0.58 |
+| Encoder-decoder | BART-large | 0.68 | 0.80 | 0.72 |
+
+Family-level means show the same pattern:
+
+| Architecture family | F-measure | SoftCons | HardCons |
+|---------------------|----------:|---------:|---------:|
+| Encoder-only | 0.713 +/- 0.031 | 0.770 +/- 0.049 | 0.721 +/- 0.048 |
+| Decoder-only | 0.583 +/- 0.038 | 0.568 +/- 0.060 | 0.498 +/- 0.070 |
+| Encoder-decoder | 0.655 +/- 0.024 | 0.768 +/- 0.025 | 0.693 +/- 0.019 |
 
 # Important Dates and Task Phases
 
@@ -172,7 +215,15 @@ starter_kit/
   submission_examples/
 ```
 
-The baseline package is expected to include at least one tuned encoder baseline and one decoder or encoder-decoder baseline, with documented hyperparameters.
+The starter kit is intended to provide runnable reference systems, not necessarily the strongest pilot systems. We will prioritize smaller models so that participants with limited GPU resources can run the baselines.
+
+| Family | Planned baseline | Rationale |
+|--------|------------------|-----------|
+| Encoder-only | `roberta-base` or `deberta-v3-base` | Compact supervised NLI baseline with standard fine-tuning. |
+| Decoder-only | `OPT-125M` or `GPT-2 small` | Small causal-LM baseline suitable for low-resource GPU settings. |
+| Encoder-decoder | `BART-base` or `Flan-T5-base` | Smaller sequence-to-sequence baseline covering the encoder-decoder family. |
+
+For each baseline, we will provide the model identifier, preprocessing steps, training/evaluation scripts, prediction format, scorer command, and recommended hyperparameters. Where redistribution and storage constraints allow it, we will also provide trained checkpoints; otherwise, the scripts and configuration files will reproduce the baseline.
 
 # Competition Rules and Terms
 
@@ -209,7 +260,7 @@ By submitting to the official competition, teams consent to the release of their
 <details>
   <summary>6. Model and system reporting</summary>
 
-Teams must report whether their system uses open-weight models, API-based models, private models, retrieval, external training data, prompt engineering, fine-tuning, or ensembling.
+Teams must report whether their system uses open-weight models, commercial/API-based models, private/closed models, retrieval, external training data, prompt engineering, fine-tuning, or ensembling. This metadata is mandatory for task analysis but will not define separate official leaderboards by default.
 </details>
 
 <details>
@@ -247,7 +298,13 @@ Yes. Open-weight, API-based, fine-tuned, prompted, and hybrid systems are allowe
 <details>
   <summary>Can I train on PhrasIS?</summary>
 
-The final data-use policy will be documented before the training phase. The official release will distinguish task data from auxiliary resources and will require participants to report any use of PhrasIS or related public datasets.
+The final data-use policy will be documented before the training phase. The official release will distinguish task training data from auxiliary resources and will require participants to report any use of PhrasIS or related public datasets. The official evaluation split will be grouped by source phrase pair so that training data does not contain another direction, language, or variant of a final-test pair.
+</details>
+
+<details>
+  <summary>Is this a compositionality benchmark?</summary>
+
+Only in a specific phrase-level sense. DiCo-NLI evaluates inference over composed phrase meanings inherited from the iSTS/PhrasIS chunk-alignment framework. It is not a controlled benchmark of arbitrary compositional generalization over generated syntactic templates.
 </details>
 
 <details>
@@ -266,6 +323,7 @@ Yes. Final gold labels are expected to be released after the official evaluation
 
 - SemEval-2027 call for task proposals: https://semeval.github.io/SemEval2027/cft
 - SemEval FAQ: https://semeval.github.io/faq.html
+- Assessing Logical Consistency in Fine-Grained NLI, LREC 2026 pilot paper: https://lrec.elra.info/lrec2026-main-423
 - PhrasIS: Phrase Inference and Similarity benchmark: https://doi.org/10.1093/jigpal/jzae037
 - The Reversal Curse: LLMs trained on "A is B" fail to learn "B is A": https://proceedings.iclr.cc/paper_files/paper/2024/hash/5178b2f2d7c44aa390c0777dc77b3f0c-Abstract-Conference.html
 
