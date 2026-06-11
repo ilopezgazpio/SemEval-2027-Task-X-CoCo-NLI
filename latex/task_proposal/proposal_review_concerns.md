@@ -408,7 +408,27 @@ This protocol directly addresses the linguistic risk noted by the reviewer, espe
 > It would be helpful to report the distribution of EQUIVALENCE, FORWARD-ENTAILMENT, and BACKWARD-ENTAILMENT labels in the pilot data.
 > If the distribution is highly skewed, the organizers may wish to consider stratified sampling or related balancing strategies to avoid inflating HardCoh scores through majority-class behaviour.
 
-**Answer R2.3** We agree with the reviewer in that we include here and will include statistics of the data in the data folder of the current task
+**Answer R2.3** We agree that label balance should be made explicit, both in the proposal response and in the released task documentation. The reversible English source subset used in the pilot contains 1,946 source phrase pairs and is close to balanced across the three reversible labels:
+
+| Gold label | Source pairs | Percentage |
+|---|---:|---:|
+| `EQUIVALENCE` | 686 | 35.3 |
+| `FORWARD_ENTAILMENT` | 624 | 32.1 |
+| `BACKWARD_ENTAILMENT` | 636 | 32.7 |
+| **Total** | **1,946** | **100.0** |
+
+After adding the reversed counterpart for each source pair, the ordered-instance distribution remains balanced. `EQUIVALENCE` maps to itself, while `FORWARD_ENTAILMENT` and `BACKWARD_ENTAILMENT` swap under the reversal operator:
+
+| Gold label | Ordered instances | Percentage |
+|---|---:|---:|
+| `EQUIVALENCE` | 1,372 | 35.3 |
+| `FORWARD_ENTAILMENT` | 1,260 | 32.4 |
+| `BACKWARD_ENTAILMENT` | 1,260 | 32.4 |
+| **Total** | **3,892** | **100.0** |
+
+This distribution reduces the risk that `HardCons` can be inflated by a trivial majority-class strategy on the reversible subset. In the official release, we will report label distributions for every split and language in `data/README.md`, including the trial and final data.
+
+The `NEGATIVE_OTHER` items introduced from non-reversible PhrasIS labels will be controlled separately. They are useful as noise and for making the classification problem less artificially clean, but they will not dominate the reversible labels and they will not be included in `SoftCons` or `HardCons`, because they do not have a deterministic reversed counterpart. If translation filtering or item removal changes the Spanish or Basque label distribution substantially, we will use stratified sampling or controlled downsampling to keep the official splits comparable across languages, and we will document any such adjustment.
 
 > (R2.4) Starter kit specifics. The proposal mentions that a starter kit will be provided, but does not specify which baseline models will be included.
 >  Given the hyperparameter sensitivity noted in the pilot study, providing at least one reasonably tuned encoder-only and one decoder-only baseline with documented hyperparameter settings would likely lower the barrier to participation for teams with limited compute resources.
