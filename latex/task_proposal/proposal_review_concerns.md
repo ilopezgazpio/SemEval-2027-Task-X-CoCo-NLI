@@ -395,7 +395,13 @@ While the proposal is strong overall, the following points deserve attention in 
 > This is particularly relevant for Basque, whose morphosyntactic structure differs substantially from English and Spanish and may affect directional entailment relationships.
 > A brief inter-annotator agreement protocol for the translated tracks would strengthen confidence in the multilingual extension.
 
-**Answer R2.2** Link with previous responses with the jaccard coefficient / any other novel ideas ??
+**Answer R2.2** We agree. This concern is closely related to the issues addressed in **R1.9** and **R1.10**. The multilingual extension must validate preservation of the directional NLI relation, not only translation adequacy. We have therefore revised the protocol so that Spanish and Basque annotation is treated as a label-preservation task.
+
+Candidate translations will be generated using multiple MT/LLM systems, and automatic agreement signals such as token/lemma overlap will be used only for triage. The final decision will be made by bilingual annotators at the phrase-pair level. For each target language, two bilingual annotators will independently validate a pilot audit of 100 source pairs. The audit will check: (i) phrase-level translation adequacy, (ii) preservation of the expected NLI label, and (iii) preservation of the deterministic reversed label after swapping premise and hypothesis. We will report raw agreement, Cohen's kappa, adjudication counts, and translation-induced label-flip rates.
+
+For the full release, each translated item will be reviewed by one bilingual annotator. Items flagged as low-confidence, ambiguous, or relation-changing will be reviewed or adjudicated by the second annotator. If a translated pair changes entailment direction or becomes unstable in the target language, it will be corrected if possible; otherwise, it will be removed from the official evaluation split.
+
+This protocol directly addresses the linguistic risk noted by the reviewer, especially for Basque morphology and case marking, and ensures that the Spanish and Basque tracks evaluate directional consistency rather than artifacts of translation.
 
 > (R2.3) Label balance across languages. The proposal reports that PhrasIS contains 1,946 English source pairs with reversible labels,
 > yielding approximately 4k ordered instances for the English track.
