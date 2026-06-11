@@ -327,7 +327,13 @@ To my knowledge, no prior shared task has combined the Reversal Curse framing wi
 > and does not directly address directional reversal coherence in a shared-task framework.
 > The authors could strengthen the related work section further by citing these studies explicitly to sharpen the novelty argument.
 
-** Answer R2.1**  We thank the reviewer for the interesting references we were not aware of. We will include those in the camera ready version of the manuscript.
+**Answer R2.1** We thank the reviewer for these references. We agree that they are directly relevant and will include them in the revised related work section to sharpen the novelty claim.
+
+In particular, we will discuss BECEL as the closest benchmark in the NLI consistency literature. BECEL evaluates several logical consistency properties, including symmetric consistency for NLI, but its NLI setting is based on standard 3-class labels and restricted symmetry cases. DiCo-NLI differs by explicitly modeling directional entailment reversal with fine-grained Natural Logic-style labels: `FORWARD_ENTAILMENT` maps deterministically to `BACKWARD_ENTAILMENT`, while `EQUIVALENCE` maps to itself. Thus, the task is not only checking invariance under symmetry but evaluating direction-sensitive label reversal.
+
+We will also cite Blanck et al. on NLI meta-inferential properties and Wu and Last on transitive self-consistency. These works are relevant because they study consistency properties of NLI systems beyond isolated accuracy. However, they remain research-paper benchmarks rather than shared tasks and do not define a multilingual fine-grained directional-reversal evaluation with an official scorer and participant submissions.
+
+The revised related work will therefore position DiCo-NLI as complementary to this literature: it brings consistency-based NLI evaluation into a shared-task setting, focuses on fine-grained directional entailment rather than only 3-way NLI labels, and evaluates both item-level correctness and paired directional consistency across monolingual and mixed multilingual tracks.
 
 The evaluation design is one of the strongest aspects of the proposal. The three-metric framework is well conceived:
 
