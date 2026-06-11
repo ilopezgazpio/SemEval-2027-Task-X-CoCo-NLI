@@ -198,8 +198,15 @@ Finally, the data documentation will report the translation systems used, the va
 > (R1.10) The "Everyone is hungry / Someone is hungry" example is fine in English under a generic reading, but generic/specific scope is exactly the kind of thing that translation destabilizes.
 > With 200 expert hours budgeted for ES+EU combined over roughly 4k 2 items, I'd want the protocol pinned down and a translation-induced label-flip audit on a pilot sample.
 
-**Answer R1.10** Please note the generic/specific relation information metadata will not be used at the time of translation. Translation of specific short snippets of text is direct for all languages and should be trivial for LLMs or neural MT systems in isolation of the rest of the pair information.
-The translation of "Everyone is hungry" to spanish is that of: "Todos están hambrientos", and to basque is "Denak gose dira", which is a direct trivial translation. We don't intend to include any relation or metadata information that can lead to confusion in the translation step.
+**Answer R1.10** We agree with the reviewer that the "Everyone is hungry / Someone is hungry" example is deceptively simple. Quantification, generic/specific readings, plurality, definiteness, and scope are precisely the types of phenomena that can be destabilized by translation, especially across typologically different languages such as English, Spanish, and Basque.
+
+We therefore will not assume that short phrase translations are automatically relation-preserving. Instead, the validation protocol described in R1.9 explicitly treats translation as a label-preservation problem. The translated target-language pair must preserve both the original NLI label and the deterministic reversed label. Quantifier- and scope-sensitive pairs will be treated as high-priority cases in the translation audit.
+
+Concretely, the 100-source-pair pilot audit for each target language will include, where available, examples involving quantification, plurality, specificity/generality, determiners, and related scope-sensitive constructions. The audit will estimate how often such items preserve the English label after translation and how often they induce a label flip or unstable interpretation. We will report these counts together with raw agreement and Cohen's kappa.
+
+If a translated item changes the entailment direction or becomes ambiguous in the target language, it will not be kept with the English-derived label. The item will either be corrected by choosing a better target-language formulation or removed from the official evaluation split. This applies equally to apparently simple examples such as `Everyone is hungry / Someone is hungry`.
+
+Thus, the multilingual tracks will not rely on the assumption that translation is trivial. They will rely on explicit bilingual validation of directional label preservation.
 
 > (R1.11) The cross-lingual evaluation story is also ambiguous. Are the three tracks independent, or is EN-EU transfer a first-class submission? 
 > This affects how participants build systems and whether the macro-average is meaningful.
