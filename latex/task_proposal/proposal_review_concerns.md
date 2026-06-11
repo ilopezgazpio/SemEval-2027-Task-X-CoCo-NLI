@@ -43,7 +43,20 @@ We have revised the framing to avoid claiming that the task directly measures Be
 > (R1.2) A model can be perfectly consistent on CoCo-NLI and still fail Berglund-style probes, or vice versa.
 > The proposal elides this ("the inability of LLMs... to preserve inference when relation direction is reversed") and uses the gravity of the RC literature to motivate a task that doesn't actually test the RC.
 
-**Answer R1.2** Motivate that RC is not that dissimilar to the current task definition. Related work to berglund et al. also investigated similar tasks as compositionality or set aggregation. 
+**Answer R1.2** We agree that DiCo-NLI scores and Berglund-style Reversal Curse scores are not logically interchangeable at the level of individual systems. A model may be consistent when both phrases are provided in an NLI input pair and still fail a parametric factual-reversal probe; conversely, a model may retrieve reversed factual associations while still failing to assign fine-grained entailment labels consistently. We therefore do not treat DiCo-NLI as a direct proxy measurement of the original Reversal Curse.
+
+However, the connection to Berglund et al. is not merely rhetorical. The closest point of contact is the **seen/easy** condition in our LREC pilot. In that setting, models were fine-tuned/model-selected on original directional phrase-pair constructs and then evaluated on their reversed manipulated counterparts. This is structurally analogous to Berglund et al. in the sense that exposure to one directional formulation is tested against behavior in the reverse direction. The crucial difference is the target of prediction: Berglund et al. evaluate parametric factual recall/generation, whereas DiCo-NLI evaluates fine-grained NLI relation prediction.
+
+| Berglund et al. Reversal Curse | LREC seen/easy DiCo-NLI setup |
+|---|---|
+| Model is trained/fine-tuned on `A is B` | Model is fine-tuned/model-selected on an original directional phrase construct `A -> B` |
+| Model is queried on the reverse form `B -> A` | Model is evaluated on the reversed manipulated phrase pair `B -> A` |
+| Tests whether one directional exposure supports reverse factual retrieval | Tests whether one directional NLI construct supports reverse-label prediction |
+| Output is factual recall or generation | Output is a fine-grained NLI label |
+
+The SemEval task itself focuses on the harder **unseen** condition, because our LREC experiments showed that this setting is more challenging and cleaner for participants: both the original and reversed phrase-pair constructs are held out from training. This design choice avoids adding a separate seen/unseen competition distinction while retaining the core reversal-based diagnostic.
+
+We have revised the motivation accordingly. Berglund et al. are now presented as conceptual and methodological motivation for reversal-based evaluation, not as a claim that DiCo-NLI directly measures weight-level factual reversal. DiCo-NLI contributes to the broader line of work on directional generalization by operationalizing reversal at the level of fine-grained NLI labels and deterministic label reversal.
 
 > (R1.3) I'd push the authors to either (a) rename and remotivate the task as directional inferential coherence, which is what it actually is!
 > and which I think is defensible on its own terms, or (b) include a component that correlates CoCo-NLI performance with a parametric-reversal probe and argues empirically that the two are connected.
